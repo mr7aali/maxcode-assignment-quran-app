@@ -1,0 +1,197 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  background: #0f1117;
+  color: #e8e8e8;
+}
+
+button,
+input,
+select {
+  font: inherit;
+}
+
+.arabic-text {
+  direction: rtl;
+  font-family: var(--font-noto-naskh), serif;
+  line-height: 2.2;
+}
+
+.arabic-amiri {
+  direction: rtl;
+  font-family: var(--font-amiri), serif;
+  line-height: 2.2;
+}
+
+.arabic-scheherazade {
+  direction: rtl;
+  font-family: var(--font-scheherazade), serif;
+  line-height: 2.2;
+}
+
+.ayah-badge {
+  display: inline-flex;
+  width: 36px;
+  height: 36px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #c9a84c;
+  border-radius: 9999px;
+  color: #e8c97e;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.shimmer {
+  position: relative;
+  overflow: hidden;
+}
+
+.shimmer::after {
+  position: absolute;
+  inset: 0;
+  content: '';
+  background: linear-gradient(90deg, transparent, rgba(232, 201, 126, 0.08), transparent);
+  transform: translateX(-100%);
+  animation: shimmer 1.5s infinite;
+}
+
+.surah-active {
+  border-left-color: #c9a84c;
+  background: rgba(201, 168, 76, 0.08);
+}
+
+.tooltip-text::before {
+  position: absolute;
+  top: 50%;
+  right: 100%;
+  width: 0;
+  height: 0;
+  border-top: 5px solid transparent;
+  border-right: 5px solid #22263a;
+  border-bottom: 5px solid transparent;
+  content: '';
+  transform: translateY(-50%);
+}
+
+.gold-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(201, 168, 76, 0.45) transparent;
+}
+
+.gold-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+
+.gold-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.gold-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(201, 168, 76, 0.35);
+  border-radius: 9999px;
+}
+
+.gold-scrollbar:hover::-webkit-scrollbar-thumb {
+  background: rgba(232, 201, 126, 0.75);
+}
+
+.contain-content {
+  contain: content;
+}
+
+.surah-hero {
+  background:
+    radial-gradient(circle at center, rgba(232, 201, 126, 0.06), transparent 35%),
+    linear-gradient(135deg, #1a1d27 0%, #1e2235 48%, #1a1d27 100%);
+}
+
+.surah-hero::before {
+  position: absolute;
+  inset: 0;
+  content: '';
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg width='72' height='72' viewBox='0 0 72 72' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M36 4l12 20 20 12-20 12-12 20-12-20L4 36l20-12z' fill='none' stroke='%23E8C97E' stroke-width='2'/%3E%3C/svg%3E");
+}
+
+.ornament {
+  position: absolute;
+  top: 22px;
+  width: 88px;
+  height: 88px;
+  border-top: 1px solid rgba(201, 168, 76, 0.2);
+}
+
+.ornament-left {
+  left: 22px;
+  border-left: 1px solid rgba(201, 168, 76, 0.2);
+}
+
+.ornament-right {
+  right: 22px;
+  border-right: 1px solid rgba(201, 168, 76, 0.2);
+}
+
+.audio-slider {
+  appearance: none;
+  background: linear-gradient(90deg, #c9a84c var(--progress, 0%), #2a2d3e var(--progress, 0%));
+}
+
+.audio-slider::-webkit-slider-thumb {
+  width: 14px;
+  height: 14px;
+  appearance: none;
+  background: #e8c97e;
+  border-radius: 9999px;
+}
+
+.audio-slider::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  background: #e8c97e;
+  border: 0;
+  border-radius: 9999px;
+}
+
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeScale {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
