@@ -14,7 +14,6 @@ export function ThemeToggle({ className, compactLabel = true }: ThemeToggleProps
 
   return (
     <button
-      style={{ border: '1px solid red' }}
       type="button"
       aria-label={isDark ? 'Switch to light theme' : 'Switch to dark theme'}
       aria-pressed={!isDark}
@@ -41,8 +40,8 @@ export function ThemeToggle({ className, compactLabel = true }: ThemeToggleProps
       </span>
       <span
         className={cn(
-          'absolute top-1 h-6 w-6 rounded-full shadow-[var(--shadow-md)] transition-transform duration-300 ease-out',
-          isDark ? 'translate-x-8 bg-slate-100' : 'translate-x-0.5 bg-white',
+          'absolute left-1 top-1 h-6 w-6 rounded-full shadow-[var(--shadow-md)] transition-transform duration-300 ease-out',
+          isDark ? 'translate-x-8 bg-slate-100' : 'translate-x-0 bg-white',
         )}
       />
       {!compactLabel && (
