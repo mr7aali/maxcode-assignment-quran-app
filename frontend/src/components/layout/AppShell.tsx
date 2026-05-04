@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo } from 'react';
 import { usePathname } from 'next/navigation';
+import { NowPlayingBar } from '@/components/audio/NowPlayingBar';
 import { BookmarksPanel } from '@/components/panels/BookmarksPanel';
 import { FontPanel } from '@/components/panels/FontPanel';
 import { SearchModal } from '@/components/panels/SearchModal';
@@ -29,6 +30,7 @@ export function AppShell({ selectedNumber, initialSurahs, initialSurah }: AppShe
   useKeyboard();
   const pathname = usePathname();
   const clearPlaying = useAudioStore((state) => state.clearPlaying);
+  const playingAyahId = useAudioStore((state) => state.playingAyahId);
   const isSurahSidebarOpen = useAppStore((state) => state.isSurahSidebarOpen);
   const theme = useAppStore((state) => state.theme);
   const { surahs, loading: surahsLoading } = useSurahList(initialSurahs);
@@ -43,6 +45,26 @@ export function AppShell({ selectedNumber, initialSurahs, initialSurah }: AppShe
   useEffect(() => {
     clearPlaying();
   }, [clearPlaying, pathname]);
+
+  useEffect(() => {
+    if (!playingAyahId) {
+      return;
+    }
+
+    const [surahPart, ayahPart] = playingAyahId.split(':');
+    const playingSurahNumber = Number(surahPart);
+    const playingAyahNumber = Number(ayahPart);
+
+    if (playingSurahNumber !== selectedNumber || !Number.isInteger(playingAyahNumber)) {
+      return;
+    }
+
+    window.requestAnimationFrame(() => {
+      document
+        .getElementById(`ayah-${playingAyahNumber}`)
+        ?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+  }, [playingAyahId, selectedNumber]);
 
   const activeSurah = useMemo(
     () => detail?.summary ?? surahs.find((surah) => surah.number === selectedNumber) ?? null,
@@ -60,7 +82,7 @@ export function AppShell({ selectedNumber, initialSurahs, initialSurah }: AppShe
         )}
       >
         <TopBar surah={activeSurah} />
-        <main className="min-h-[calc(100vh-56px)]">
+        <main className="min-h-[calc(100vh-56px)] pb-28">
           {activeSurah && <SurahHeader surah={activeSurah} />}
 
           {loading && (
@@ -83,6 +105,7 @@ export function AppShell({ selectedNumber, initialSurahs, initialSurah }: AppShe
               <AyahCard
                 key={ayah.number}
                 arabicAyah={ayah}
+                lastAyahNumber={detail.summary.numberOfAyahs}
                 surahNumber={selectedNumber}
                 surahName={detail.summary.englishName}
                 banglaTranslation={detail.bangla.ayahs[index]?.text ?? ''}
@@ -94,6 +117,7 @@ export function AppShell({ selectedNumber, initialSurahs, initialSurah }: AppShe
       <BookmarksPanel />
       <FontPanel />
       <SearchModal />
+      <NowPlayingBar sidebarOpen={isSurahSidebarOpen} surahName={activeSurah?.englishName} />
     </div>
   );
 }
