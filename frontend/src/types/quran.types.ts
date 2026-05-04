@@ -47,3 +47,14 @@ export interface SearchResult {
   text: string;
   edition: string;
 }
+
+export interface BookmarkItem {
+  id: string;
+  surahNumber: number;
+  surahName: string;
+  ayahNumber: number;
+  arabicText: string;
+  englishTranslation: string;
+  banglaTranslation: string;
+  createdAt: string;
+}

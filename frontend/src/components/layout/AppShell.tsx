@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo } from 'react';
 import { usePathname } from 'next/navigation';
+import { BookmarksPanel } from '@/components/panels/BookmarksPanel';
 import { FontPanel } from '@/components/panels/FontPanel';
 import { SearchModal } from '@/components/panels/SearchModal';
 import { AyahCard } from '@/components/reader/AyahCard';
@@ -83,12 +84,14 @@ export function AppShell({ selectedNumber, initialSurahs, initialSurah }: AppShe
                 key={ayah.number}
                 arabicAyah={ayah}
                 surahNumber={selectedNumber}
+                surahName={detail.summary.englishName}
                 banglaTranslation={detail.bangla.ayahs[index]?.text ?? ''}
                 englishTranslation={detail.english.ayahs[index]?.text ?? ''}
               />
             ))}
         </main>
       </div>
+      <BookmarksPanel />
       <FontPanel />
       <SearchModal />
     </div>

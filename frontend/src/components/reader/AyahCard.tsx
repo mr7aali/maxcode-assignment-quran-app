@@ -12,6 +12,7 @@ import type { Ayah } from '@/types/quran.types';
 
 interface AyahCardProps {
   surahNumber: number;
+  surahName: string;
   arabicAyah: Ayah;
   englishTranslation?: string;
   banglaTranslation?: string;
@@ -19,12 +20,18 @@ interface AyahCardProps {
 
 export function AyahCard({
   surahNumber,
+  surahName,
   arabicAyah,
   englishTranslation = '',
   banglaTranslation = '',
 }: AyahCardProps) {
   const [copied, setCopied] = useState(false);
   const settings = useAppStore((state) => state.settings);
+  const bookmarkId = `${surahNumber}:${arabicAyah.numberInSurah}`;
+  const isBookmarked = useAppStore((state) =>
+    state.bookmarks.some((bookmark) => bookmark.id === bookmarkId),
+  );
+  const toggleBookmark = useAppStore((state) => state.toggleBookmark);
   const player = useAudioPlayer(surahNumber, arabicAyah.numberInSurah);
   const ayahId = `ayah-${arabicAyah.numberInSurah}`;
 
@@ -37,6 +44,19 @@ export function AyahCard({
     await navigator.clipboard.writeText(text.trim());
     setCopied(true);
     window.setTimeout(() => setCopied(false), 1200);
+  }
+
+  function onBookmark(): void {
+    toggleBookmark({
+      id: bookmarkId,
+      surahNumber,
+      surahName: surahName || `Surah ${surahNumber}`,
+      ayahNumber: arabicAyah.numberInSurah,
+      arabicText: arabicAyah.text,
+      englishTranslation,
+      banglaTranslation,
+      createdAt: new Date().toISOString(),
+    });
   }
 
   return (
@@ -55,8 +75,15 @@ export function AyahCard({
           <Button aria-label="Copy ayah" size="icon" variant="ghost" onClick={copyAyah}>
             {copied ? <Check className="h-4 w-4 text-accent-teal" /> : <Copy className="h-4 w-4" />}
           </Button>
-          <Button aria-label="Bookmark ayah" disabled size="icon" variant="ghost">
-            <Bookmark className="h-4 w-4" />
+          <Button
+            aria-label={isBookmarked ? 'Remove bookmark' : 'Bookmark ayah'}
+            aria-pressed={isBookmarked}
+            className={cn(isBookmarked && 'text-accent-gold hover:text-accent-gold')}
+            size="icon"
+            variant="ghost"
+            onClick={onBookmark}
+          >
+            <Bookmark className={cn('h-4 w-4', isBookmarked && 'fill-current')} />
           </Button>
           <AudioPlayer
             ayahNumber={arabicAyah.numberInSurah}

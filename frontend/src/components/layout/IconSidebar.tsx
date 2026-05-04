@@ -13,6 +13,9 @@ export function IconSidebar() {
   const setSearchOpen = useAppStore((state) => state.setSearchOpen);
   const setFontPanelOpen = useAppStore((state) => state.setFontPanelOpen);
   const isFontPanelOpen = useAppStore((state) => state.isFontPanelOpen);
+  const isBookmarksOpen = useAppStore((state) => state.isBookmarksOpen);
+  const toggleBookmarksOpen = useAppStore((state) => state.toggleBookmarksOpen);
+  const bookmarkCount = useAppStore((state) => state.bookmarks.length);
 
   return (
     <nav className="fixed left-0 top-0 z-40 flex h-screen w-14 flex-col items-center border-r border-[color-mix(in_srgb,var(--sidebar-icon-hover)_70%,black)] bg-[var(--sidebar-icon-bg)] py-3">
@@ -58,13 +61,22 @@ export function IconSidebar() {
         </Tooltip>
         <Tooltip label="Bookmarks">
           <Button
-            aria-label="Bookmarks unavailable"
-            className="text-[var(--sidebar-icon-text)]"
-            disabled
+            aria-label="Open bookmarks"
+            aria-pressed={isBookmarksOpen}
+            className={cn(
+              'relative text-[var(--sidebar-icon-text)] hover:bg-[var(--sidebar-icon-hover)] hover:text-[var(--sidebar-icon-active)]',
+              isBookmarksOpen && 'text-[var(--sidebar-icon-active)]',
+            )}
             size="icon"
             variant="ghost"
+            onClick={toggleBookmarksOpen}
           >
             <Bookmark className="h-5 w-5" />
+            {bookmarkCount > 0 && (
+              <span className="absolute right-1 top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-accent-gold px-1 text-[10px] font-semibold leading-none text-[var(--sidebar-icon-bg)]">
+                {bookmarkCount > 9 ? '9+' : bookmarkCount}
+              </span>
+            )}
           </Button>
         </Tooltip>
         <Tooltip label="Settings">
