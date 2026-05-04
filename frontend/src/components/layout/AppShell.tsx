@@ -29,8 +29,15 @@ export function AppShell({ selectedNumber, initialSurahs, initialSurah }: AppShe
   const pathname = usePathname();
   const clearPlaying = useAudioStore((state) => state.clearPlaying);
   const isSurahSidebarOpen = useAppStore((state) => state.isSurahSidebarOpen);
+  const theme = useAppStore((state) => state.theme);
   const { surahs, loading: surahsLoading } = useSurahList(initialSurahs);
   const { detail, loading, error } = useSurah(selectedNumber, initialSurah);
+
+  useEffect(() => {
+    const root = document.documentElement;
+    root.classList.toggle('dark', theme === 'dark');
+    document.body.classList.toggle('light-paper-texture', theme === 'light');
+  }, [theme]);
 
   useEffect(() => {
     clearPlaying();
@@ -42,7 +49,7 @@ export function AppShell({ selectedNumber, initialSurahs, initialSurah }: AppShe
   );
 
   return (
-    <div className="min-h-screen bg-bg-primary text-text-primary">
+    <div className="relative z-10 min-h-screen bg-bg-primary text-text-primary">
       <IconSidebar />
       <SurahSidebar activeNumber={selectedNumber} loading={surahsLoading} surahs={surahs} />
       <div

@@ -3,11 +3,88 @@
 @tailwind utilities;
 
 :root {
+  color-scheme: light;
+  --bg-primary: #f5f0e8;
+  --bg-secondary: #ede7d9;
+  --bg-tertiary: #e4dbcb;
+  --bg-sidebar: #2c2416;
+  --bg-surah-list: #faf7f2;
+  --bg-elevated: #ffffff;
+
+  --text-primary: #1a1209;
+  --text-secondary: #4a3f2f;
+  --text-muted: #8c7b65;
+  --text-arabic: #1a1209;
+
+  --accent-gold: #8b6914;
+  --accent-gold-light: #c9a84c;
+  --accent-gold-bg: #fdf3dc;
+  --accent-gold-border: #d4a843;
+  --accent-teal: #0e7490;
+  --accent-teal-bg: #e0f7fa;
+
+  --border-default: #d4c5a9;
+  --border-light: #e8ddd0;
+
+  --shadow-sm: 0 1px 3px rgba(74, 63, 47, 0.08);
+  --shadow-md: 0 4px 12px rgba(74, 63, 47, 0.12);
+  --shadow-lg: 0 8px 24px rgba(74, 63, 47, 0.16);
+
+  --scrollbar-thumb: #c9a84c;
+  --scrollbar-track: #ede7d9;
+
+  --sidebar-icon-bg: #2c2416;
+  --sidebar-icon-text: #c4b59b;
+  --sidebar-icon-hover: #3d3220;
+  --sidebar-icon-active: #c9a84c;
+}
+
+.dark {
   color-scheme: dark;
+  --bg-primary: #0f1117;
+  --bg-secondary: #1a1d27;
+  --bg-tertiary: #22263a;
+  --bg-sidebar: #141720;
+  --bg-surah-list: #141720;
+  --bg-elevated: #1a1d27;
+
+  --text-primary: #e8e8e8;
+  --text-secondary: #9ca3af;
+  --text-muted: #6b7280;
+  --text-arabic: #f0eee8;
+
+  --accent-gold: #c9a84c;
+  --accent-gold-light: #e8c97e;
+  --accent-gold-bg: rgba(201, 168, 76, 0.1);
+  --accent-gold-border: #c9a84c;
+  --accent-teal: #2dd4bf;
+  --accent-teal-bg: rgba(45, 212, 191, 0.1);
+
+  --border-default: #2a2d3e;
+  --border-light: #353849;
+
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.5);
+
+  --scrollbar-thumb: #c9a84c;
+  --scrollbar-track: #1a1d27;
+
+  --sidebar-icon-bg: #141720;
+  --sidebar-icon-text: #9ca3af;
+  --sidebar-icon-hover: #22263a;
+  --sidebar-icon-active: #c9a84c;
 }
 
 * {
   box-sizing: border-box;
+}
+
+*:where(:not(svg):not(path):not([class*='animate-']):not([class*='transition-'])) {
+  transition:
+    background-color 300ms ease,
+    border-color 300ms ease,
+    color 200ms ease;
 }
 
 html {
@@ -16,8 +93,8 @@ html {
 
 body {
   min-height: 100vh;
-  background: #0f1117;
-  color: #e8e8e8;
+  background: var(--bg-primary);
+  color: var(--text-primary);
 }
 
 button,
@@ -30,18 +107,21 @@ select {
   direction: rtl;
   font-family: var(--font-noto-naskh), serif;
   line-height: 2.2;
+  color: var(--text-arabic);
 }
 
 .arabic-amiri {
   direction: rtl;
   font-family: var(--font-amiri), serif;
   line-height: 2.2;
+  color: var(--text-arabic);
 }
 
 .arabic-scheherazade {
   direction: rtl;
   font-family: var(--font-scheherazade), serif;
   line-height: 2.2;
+  color: var(--text-arabic);
 }
 
 .ayah-badge {
@@ -50,30 +130,33 @@ select {
   height: 36px;
   align-items: center;
   justify-content: center;
-  border: 1px solid #c9a84c;
+  border: 1px solid var(--accent-gold-border);
   border-radius: 9999px;
-  color: #e8c97e;
+  color: var(--accent-gold);
   font-size: 0.875rem;
   font-weight: 600;
+  background: color-mix(in srgb, var(--accent-gold-bg) 65%, transparent);
 }
 
 .shimmer {
   position: relative;
   overflow: hidden;
+  background: var(--bg-tertiary);
 }
 
 .shimmer::after {
   position: absolute;
   inset: 0;
   content: '';
-  background: linear-gradient(90deg, transparent, rgba(232, 201, 126, 0.08), transparent);
+  background: linear-gradient(90deg, var(--bg-secondary), var(--bg-tertiary), var(--bg-secondary));
+  opacity: 0.82;
   transform: translateX(-100%);
   animation: shimmer 1.5s infinite;
 }
 
 .surah-active {
-  border-left-color: #c9a84c;
-  background: rgba(201, 168, 76, 0.08);
+  border-left-color: var(--accent-gold);
+  background: var(--accent-gold-bg);
 }
 
 .tooltip-text::before {
@@ -83,7 +166,7 @@ select {
   width: 0;
   height: 0;
   border-top: 5px solid transparent;
-  border-right: 5px solid #22263a;
+  border-right: 5px solid var(--bg-tertiary);
   border-bottom: 5px solid transparent;
   content: '';
   transform: translateY(-50%);
@@ -91,7 +174,7 @@ select {
 
 .gold-scrollbar {
   scrollbar-width: thin;
-  scrollbar-color: rgba(201, 168, 76, 0.45) transparent;
+  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
 }
 
 .gold-scrollbar::-webkit-scrollbar {
@@ -99,16 +182,16 @@ select {
 }
 
 .gold-scrollbar::-webkit-scrollbar-track {
-  background: transparent;
+  background: var(--scrollbar-track);
 }
 
 .gold-scrollbar::-webkit-scrollbar-thumb {
-  background: rgba(201, 168, 76, 0.35);
+  background: var(--scrollbar-thumb);
   border-radius: 9999px;
 }
 
 .gold-scrollbar:hover::-webkit-scrollbar-thumb {
-  background: rgba(232, 201, 126, 0.75);
+  background: var(--accent-gold);
 }
 
 .contain-content {
@@ -117,16 +200,32 @@ select {
 
 .surah-hero {
   background:
+    radial-gradient(circle at center, rgba(201, 168, 76, 0.16), transparent 38%),
+    linear-gradient(135deg, var(--bg-secondary) 0%, var(--border-light) 48%, var(--bg-secondary) 100%);
+  box-shadow: inset 0 -1px 0 var(--border-light);
+}
+
+.dark .surah-hero {
+  background:
     radial-gradient(circle at center, rgba(232, 201, 126, 0.06), transparent 35%),
-    linear-gradient(135deg, #1a1d27 0%, #1e2235 48%, #1a1d27 100%);
+    linear-gradient(
+      135deg,
+      var(--bg-secondary) 0%,
+      color-mix(in srgb, var(--bg-tertiary) 72%, var(--bg-primary)) 48%,
+      var(--bg-secondary) 100%
+    );
 }
 
 .surah-hero::before {
   position: absolute;
   inset: 0;
   content: '';
-  opacity: 0.03;
+  opacity: 0.08;
   background-image: url("data:image/svg+xml,%3Csvg width='72' height='72' viewBox='0 0 72 72' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M36 4l12 20 20 12-20 12-12 20-12-20L4 36l20-12z' fill='none' stroke='%23E8C97E' stroke-width='2'/%3E%3C/svg%3E");
+}
+
+.dark .surah-hero::before {
+  opacity: 0.03;
 }
 
 .ornament {
@@ -134,38 +233,60 @@ select {
   top: 22px;
   width: 88px;
   height: 88px;
-  border-top: 1px solid rgba(201, 168, 76, 0.2);
+  border-top: 1px solid color-mix(in srgb, var(--accent-gold) 30%, transparent);
 }
 
 .ornament-left {
   left: 22px;
-  border-left: 1px solid rgba(201, 168, 76, 0.2);
+  border-left: 1px solid color-mix(in srgb, var(--accent-gold) 30%, transparent);
 }
 
 .ornament-right {
   right: 22px;
-  border-right: 1px solid rgba(201, 168, 76, 0.2);
+  border-right: 1px solid color-mix(in srgb, var(--accent-gold) 30%, transparent);
 }
 
 .audio-slider {
   appearance: none;
-  background: linear-gradient(90deg, #c9a84c var(--progress, 0%), #2a2d3e var(--progress, 0%));
+  background: linear-gradient(
+    90deg,
+    var(--accent-gold) var(--progress, 0%),
+    var(--border-default) var(--progress, 0%)
+  );
 }
 
 .audio-slider::-webkit-slider-thumb {
   width: 14px;
   height: 14px;
   appearance: none;
-  background: #e8c97e;
+  background: var(--accent-gold);
   border-radius: 9999px;
 }
 
 .audio-slider::-moz-range-thumb {
   width: 14px;
   height: 14px;
-  background: #e8c97e;
+  background: var(--accent-gold);
   border: 0;
   border-radius: 9999px;
+}
+
+.light-paper-texture {
+  position: relative;
+}
+
+.light-paper-texture::before {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  content: '';
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+}
+
+.dark .light-paper-texture::before {
+  display: none;
 }
 
 @keyframes shimmer {

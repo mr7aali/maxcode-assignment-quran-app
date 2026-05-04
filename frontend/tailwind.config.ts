@@ -1,21 +1,28 @@
 import type { Config } from 'tailwindcss';
 
 const config: Config = {
+  darkMode: 'class',
   content: ['./src/**/*.{ts,tsx}'],
   theme: {
     extend: {
       colors: {
-        'bg-primary': '#0f1117',
-        'bg-secondary': '#1a1d27',
-        'bg-tertiary': '#22263a',
-        'bg-sidebar': '#141720',
-        'accent-gold': '#c9a84c',
-        'accent-gold-light': '#e8c97e',
-        'accent-teal': '#2dd4bf',
-        'border-default': '#2a2d3e',
-        'text-primary': '#e8e8e8',
-        'text-secondary': '#9ca3af',
-        'text-muted': '#6b7280',
+        'bg-primary': 'var(--bg-primary)',
+        'bg-secondary': 'var(--bg-secondary)',
+        'bg-tertiary': 'var(--bg-tertiary)',
+        'bg-sidebar': 'var(--bg-sidebar)',
+        'bg-surah-list': 'var(--bg-surah-list)',
+        'bg-elevated': 'var(--bg-elevated)',
+        'accent-gold': 'var(--accent-gold)',
+        'accent-gold-light': 'var(--accent-gold-light)',
+        'accent-gold-bg': 'var(--accent-gold-bg)',
+        'accent-teal': 'var(--accent-teal)',
+        'accent-teal-bg': 'var(--accent-teal-bg)',
+        'border-default': 'var(--border-default)',
+        'border-light': 'var(--border-light)',
+        'text-primary': 'var(--text-primary)',
+        'text-secondary': 'var(--text-secondary)',
+        'text-muted': 'var(--text-muted)',
+        'text-arabic': 'var(--text-arabic)',
       },
       borderRadius: {
         lg: '12px',

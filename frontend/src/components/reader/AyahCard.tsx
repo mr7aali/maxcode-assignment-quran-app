@@ -43,8 +43,8 @@ export function AyahCard({
     <article
       id={ayahId}
       className={cn(
-        'group border-b border-border-default px-6 py-7 transition hover:bg-accent-gold/[0.035]',
-        player.isPlaying && 'bg-accent-gold/[0.07]',
+        'group border-b border-border-light px-6 py-7 transition hover:bg-bg-secondary hover:shadow-[var(--shadow-sm)]',
+        player.isPlaying && 'bg-accent-gold-bg shadow-[var(--shadow-sm)]',
       )}
     >
       <div className="mb-6 flex items-center justify-between gap-4">
@@ -68,7 +68,7 @@ export function AyahCard({
       </div>
 
       <p
-        className={cn('text-right text-text-primary', arabicFontClass(settings.arabicFont))}
+        className={cn('text-right text-text-arabic', arabicFontClass(settings.arabicFont))}
         dir="rtl"
         style={{ fontSize: settings.arabicFontSize, lineHeight: 2.2 }}
       >

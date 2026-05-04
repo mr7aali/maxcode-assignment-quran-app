@@ -4,6 +4,7 @@ import { ChevronLeft, ChevronRight, Menu, Search, Settings } from 'lucide-react'
 import Link from 'next/link';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
+import { ThemeToggle } from '@/components/ui/ThemeToggle';
 import { cn } from '@/lib/utils';
 import { useAppStore } from '@/store/useAppStore';
 import type { SurahSummary } from '@/types/quran.types';
@@ -21,7 +22,7 @@ export function TopBar({ surah }: TopBarProps) {
   const next = surah ? surah.number + 1 : 115;
 
   return (
-    <header className="sticky top-0 z-20 flex h-14 items-center justify-between border-b border-border-default bg-bg-primary/80 px-3 backdrop-blur md:px-5">
+    <header className="sticky top-0 z-20 flex h-14 items-center justify-between border-b border-border-default bg-[color:color-mix(in_srgb,var(--bg-primary)_92%,transparent)] px-3 shadow-[var(--shadow-sm)] backdrop-blur md:px-5 dark:bg-[color:color-mix(in_srgb,var(--bg-primary)_80%,transparent)]">
       <div className="flex items-center gap-1">
         <Button
           aria-label="Open surah list"
@@ -86,6 +87,7 @@ export function TopBar({ surah }: TopBarProps) {
         <Button aria-label="Open search" className="md:hidden" size="icon" variant="ghost" onClick={() => setSearchOpen(true)}>
           <Search className="h-5 w-5" />
         </Button>
+        <ThemeToggle className="hidden md:block" />
         <Button
           aria-label="Open settings"
           className={cn(isFontPanelOpen && 'text-accent-gold')}

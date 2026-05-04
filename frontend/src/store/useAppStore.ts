@@ -5,11 +5,16 @@ import { createJSONStorage, persist } from 'zustand/middleware';
 import type { ReciterKey } from '@/types/audio.types';
 import type { AppSettings, ArabicFont } from '@/types/settings.types';
 
+export type Theme = 'light' | 'dark';
+
 interface AppStore {
   settings: AppSettings;
+  theme: Theme;
   isSurahSidebarOpen: boolean;
   isFontPanelOpen: boolean;
   isSearchOpen: boolean;
+  setTheme: (theme: Theme) => void;
+  toggleTheme: () => void;
   setArabicFont: (font: ArabicFont) => void;
   setArabicFontSize: (size: number) => void;
   setTranslationFontSize: (size: number) => void;
@@ -34,9 +39,15 @@ export const useAppStore = create<AppStore>()(
   persist(
     (set) => ({
       settings: defaultSettings,
+      theme: 'dark',
       isSurahSidebarOpen: true,
       isFontPanelOpen: false,
       isSearchOpen: false,
+      setTheme: (theme) => set({ theme }),
+      toggleTheme: () =>
+        set((state) => ({
+          theme: state.theme === 'dark' ? 'light' : 'dark',
+        })),
       setArabicFont: (font) =>
         set((state) => ({ settings: { ...state.settings, arabicFont: font } })),
       setArabicFontSize: (size) =>
@@ -59,6 +70,7 @@ export const useAppStore = create<AppStore>()(
       storage: createJSONStorage(() => localStorage),
       partialize: (state) => ({
         settings: state.settings,
+        theme: state.theme,
         isSurahSidebarOpen: state.isSurahSidebarOpen,
       }),
     },
