@@ -11,4 +11,5 @@ export const API_PATHS = {
 export const QURAN_EDITIONS = {
   arabic: 'quran-uthmani',
   english: 'en.asad',
+  bangla: 'bn.bengali',
 } as const;

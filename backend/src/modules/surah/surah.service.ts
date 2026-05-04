@@ -80,15 +80,17 @@ export async function getSurah(number: number): Promise<SurahDetail> {
     return cached;
   }
 
-  const [arabicData, englishData] = await Promise.all([
+  const [arabicData, englishData, banglaData] = await Promise.all([
     fetchJson<UpstreamSurahEdition>(`/surah/${number}/${QURAN_EDITIONS.arabic}`),
     fetchJson<UpstreamSurahEdition>(`/surah/${number}/${QURAN_EDITIONS.english}`),
+    fetchJson<UpstreamSurahEdition>(`/surah/${number}/${QURAN_EDITIONS.bangla}`),
   ]);
 
   const detail: SurahDetail = {
     summary: toSurahSummary(arabicData),
     arabic: toSurahEdition(arabicData),
     english: toSurahEdition(englishData),
+    bangla: toSurahEdition(banglaData),
   };
 
   sharedCache.set(cacheKey, detail, SURAH_TTL_MS);
@@ -100,12 +102,14 @@ export async function getAyahs(number: number): Promise<AyahPair[]> {
 
   return detail.arabic.ayahs.map((ayah, index) => {
     const translation = detail.english.ayahs[index];
+    const banglaTranslation = detail.bangla.ayahs[index];
     return {
       surahNumber: number,
       ayahNumber: ayah.numberInSurah,
       globalAyahNumber: ayah.number,
       arabic: ayah.text,
       translation: translation?.text ?? '',
+      banglaTranslation: banglaTranslation?.text ?? '',
       juz: ayah.juz,
       page: ayah.page,
     };

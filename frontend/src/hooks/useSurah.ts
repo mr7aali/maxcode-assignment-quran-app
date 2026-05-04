@@ -8,6 +8,7 @@ interface UseSurahState {
   detail: SurahDetail | null;
   arabic: SurahEdition | null;
   english: SurahEdition | null;
+  bangla: SurahEdition | null;
   loading: boolean;
   error: string | null;
   reload: () => void;
@@ -62,6 +63,7 @@ export function useSurah(number: number, initialDetail: SurahDetail | null = nul
     detail,
     arabic: detail?.arabic ?? null,
     english: detail?.english ?? null,
+    bangla: detail?.bangla ?? null,
     loading,
     error,
     reload,

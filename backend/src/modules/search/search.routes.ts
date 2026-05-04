@@ -12,8 +12,8 @@ const searchQueryValidator = validator('query', (value, c) => {
     return c.json(fail('Search query must be at least 2 characters'), 400);
   }
 
-  if (lang !== 'en' && lang !== 'ar') {
-    return c.json(fail('lang must be "en" or "ar"'), 400);
+  if (lang !== 'en' && lang !== 'ar' && lang !== 'bn') {
+    return c.json(fail('lang must be "en", "ar", or "bn"'), 400);
   }
 
   return { q, lang: lang as SearchLanguage };

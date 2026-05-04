@@ -76,7 +76,8 @@ export function AppShell({ selectedNumber, initialSurahs, initialSurah }: AppShe
                 key={ayah.number}
                 arabicAyah={ayah}
                 surahNumber={selectedNumber}
-                translation={detail.english.ayahs[index]?.text ?? ''}
+                banglaTranslation={detail.bangla.ayahs[index]?.text ?? ''}
+                englishTranslation={detail.english.ayahs[index]?.text ?? ''}
               />
             ))}
         </main>

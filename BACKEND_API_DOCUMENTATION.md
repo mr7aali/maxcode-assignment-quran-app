@@ -46,6 +46,7 @@ Editions used by this app:
 | --- | --- | --- |
 | Arabic Quran text | `quran-uthmani` | Uthmani Arabic Quran text |
 | English translation | `en.asad` | Muhammad Asad English translation |
+| Bengali translation | `bn.bengali` | Muhiuddin Khan Bengali translation |
 
 The edition identifiers are defined in:
 
@@ -196,7 +197,7 @@ interface SurahSummary {
 }
 ```
 
-### Get One Surah With Arabic and English
+### Get One Surah With Arabic, English, and Bengali
 
 ```http
 GET /api/surah/:number
@@ -219,6 +220,7 @@ External APIs called in parallel:
 ```http
 GET https://api.alquran.cloud/v1/surah/{number}/quran-uthmani
 GET https://api.alquran.cloud/v1/surah/{number}/en.asad
+GET https://api.alquran.cloud/v1/surah/{number}/bn.bengali
 ```
 
 Response data type:
@@ -228,6 +230,7 @@ interface SurahDetail {
   summary: SurahSummary;
   arabic: SurahEdition;
   english: SurahEdition;
+  bangla: SurahEdition;
 }
 ```
 
@@ -284,9 +287,10 @@ This endpoint reuses the same logic as `GET /api/surah/:number`, so it fetches:
 ```http
 GET https://api.alquran.cloud/v1/surah/{number}/quran-uthmani
 GET https://api.alquran.cloud/v1/surah/{number}/en.asad
+GET https://api.alquran.cloud/v1/surah/{number}/bn.bengali
 ```
 
-Then it combines Arabic ayahs with the matching English translation by array index.
+Then it combines Arabic ayahs with the matching English and Bengali translations by array index.
 
 Response data type:
 
@@ -297,6 +301,7 @@ interface AyahPair {
   globalAyahNumber: number;
   arabic: string;
   translation: string;
+  banglaTranslation: string;
   juz: number;
   page: number;
 }
@@ -315,6 +320,7 @@ Examples:
 ```http
 GET /api/search?q=mercy&lang=en
 GET /api/search?q=%D8%A7%D9%84%D8%B1%D8%AD%D9%85%D9%86&lang=ar
+GET /api/search?q=%E0%A6%B0%E0%A6%B9%E0%A6%AE%E0%A6%A4&lang=bn
 ```
 
 Query parameters:
@@ -322,7 +328,7 @@ Query parameters:
 | Parameter | Required | Default | Validation |
 | --- | --- | --- | --- |
 | `q` | Yes | none | Minimum 2 characters after trimming |
-| `lang` | No | `en` | Must be `en` or `ar` |
+| `lang` | No | `en` | Must be `en`, `ar`, or `bn` |
 
 Edition mapping:
 
@@ -330,6 +336,7 @@ Edition mapping:
 | --- | --- |
 | `en` | `en.asad` |
 | `ar` | `quran-uthmani` |
+| `bn` | `bn.bengali` |
 
 External API called:
 
@@ -342,6 +349,7 @@ Examples:
 ```http
 GET https://api.alquran.cloud/v1/search/mercy/all/en.asad
 GET https://api.alquran.cloud/v1/search/%D8%A7%D9%84%D8%B1%D8%AD%D9%85%D9%86/all/quran-uthmani
+GET https://api.alquran.cloud/v1/search/%E0%A6%B0%E0%A6%B9%E0%A6%AE%E0%A6%A4/all/bn.bengali
 ```
 
 Response data type:
@@ -559,7 +567,7 @@ Client methods:
 
 ## Important Notes
 
-1. The app currently uses Muhammad Asad's English translation (`en.asad`), not Sahih International or Pickthall.
+1. The app currently uses Muhammad Asad's English translation (`en.asad`) and Muhiuddin Khan's Bengali translation (`bn.bengali`).
 2. Audio is served from EveryAyah direct MP3 files, not from AlQuran.Cloud audio endpoints.
 3. The backend validates ayah numbers only against the maximum ayah count in any surah (`286`), not against the selected surah's exact ayah count. For example, `/api/audio/url?surah=1&ayah=200` passes local validation but the generated MP3 URL will not exist.
 4. The configured reciter ID `Minshawi_Murattal_128kbps` appears to be different from the EveryAyah folder name `Minshawy_Murattal_128kbps`. The current configured URL returns `404`, while the `Minshawy` URL exists.

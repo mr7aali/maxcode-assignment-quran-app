@@ -36,6 +36,7 @@ export interface SurahDetail {
   summary: SurahSummary;
   arabic: SurahEdition;
   english: SurahEdition;
+  bangla: SurahEdition;
 }
 
 export interface SearchResult {

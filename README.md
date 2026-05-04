@@ -62,7 +62,7 @@ Endpoints:
 
 - `GET /api/health` health check
 - `GET /api/surahs` list all 114 surahs
-- `GET /api/surah/:number` surah with Arabic and English ayahs
+- `GET /api/surah/:number` surah with Arabic, English, and Bengali ayahs
 - `GET /api/surah/:number/ayahs` ayahs only
 - `GET /api/search?q=mercy&lang=en` search ayahs
 - `GET /api/audio/url?surah=1&ayah=1&reciter=Alafasy_128kbps` audio URL

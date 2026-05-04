@@ -1,4 +1,4 @@
-export type SearchLanguage = 'en' | 'ar';
+export type SearchLanguage = 'en' | 'ar' | 'bn';
 
 export interface SearchQuery {
   q: string;

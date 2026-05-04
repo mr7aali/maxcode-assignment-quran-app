@@ -10,7 +10,15 @@ import type {
 } from './search.types';
 
 function editionForLanguage(lang: SearchLanguage): string {
-  return lang === 'ar' ? QURAN_EDITIONS.arabic : QURAN_EDITIONS.english;
+  if (lang === 'ar') {
+    return QURAN_EDITIONS.arabic;
+  }
+
+  if (lang === 'bn') {
+    return QURAN_EDITIONS.bangla;
+  }
+
+  return QURAN_EDITIONS.english;
 }
 
 export async function searchAyahs(query: string, lang: SearchLanguage): Promise<SearchResult[]> {

@@ -37,6 +37,7 @@ export interface SurahDetail {
   summary: SurahSummary;
   arabic: SurahEdition;
   english: SurahEdition;
+  bangla: SurahEdition;
 }
 
 export interface AyahPair {
@@ -45,6 +46,7 @@ export interface AyahPair {
   globalAyahNumber: number;
   arabic: string;
   translation: string;
+  banglaTranslation: string;
   juz: number;
   page: number;
 }

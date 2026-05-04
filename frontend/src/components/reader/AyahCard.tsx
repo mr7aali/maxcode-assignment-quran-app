@@ -13,17 +13,27 @@ import type { Ayah } from '@/types/quran.types';
 interface AyahCardProps {
   surahNumber: number;
   arabicAyah: Ayah;
-  translation?: string;
+  englishTranslation?: string;
+  banglaTranslation?: string;
 }
 
-export function AyahCard({ surahNumber, arabicAyah, translation = '' }: AyahCardProps) {
+export function AyahCard({
+  surahNumber,
+  arabicAyah,
+  englishTranslation = '',
+  banglaTranslation = '',
+}: AyahCardProps) {
   const [copied, setCopied] = useState(false);
   const settings = useAppStore((state) => state.settings);
   const player = useAudioPlayer(surahNumber, arabicAyah.numberInSurah);
   const ayahId = `ayah-${arabicAyah.numberInSurah}`;
 
   async function copyAyah(): Promise<void> {
-    const text = `${arabicAyah.text}\n\n${arabicAyah.numberInSurah}. ${translation}`;
+    const text = [
+      arabicAyah.text,
+      `${arabicAyah.numberInSurah}. ${englishTranslation}`,
+      banglaTranslation,
+    ].filter(Boolean).join('\n\n');
     await navigator.clipboard.writeText(text.trim());
     setCopied(true);
     window.setTimeout(() => setCopied(false), 1200);
@@ -70,13 +80,17 @@ export function AyahCard({ surahNumber, arabicAyah, translation = '' }: AyahCard
       )}
 
       {settings.showTranslation && (
-        <p
-          className="mt-6 max-w-3xl leading-8 text-text-secondary"
-          style={{ fontSize: settings.translationFontSize }}
-        >
-          <span className="mr-2 font-semibold text-accent-gold">{arabicAyah.numberInSurah}</span>
-          {translation}
-        </p>
+        <div className="mt-6 max-w-3xl space-y-3 leading-8 text-text-secondary">
+          <p style={{ fontSize: settings.translationFontSize }}>
+            <span className="mr-2 font-semibold text-accent-gold">{arabicAyah.numberInSurah}</span>
+            {englishTranslation}
+          </p>
+          {banglaTranslation && (
+            <p lang="bn" style={{ fontSize: settings.translationFontSize }}>
+              {banglaTranslation}
+            </p>
+          )}
+        </div>
       )}
     </article>
   );
