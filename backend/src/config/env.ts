@@ -15,7 +15,7 @@ const DEFAULTS = {
 } as const;
 
 function readEnv(key: keyof typeof DEFAULTS): string {
-  return Bun.env[key] ?? DEFAULTS[key];
+  return process.env[key] ?? DEFAULTS[key];
 }
 
 function parsePort(value: string): number {

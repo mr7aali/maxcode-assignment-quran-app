@@ -1,5 +1,4 @@
 import { Hono } from 'hono';
-import { env } from './config/env';
 import { audioRoutes } from './modules/audio/audio.routes';
 import { searchRoutes } from './modules/search/search.routes';
 import { surahRoutes } from './modules/surah/surah.routes';
@@ -40,10 +39,3 @@ app.onError((error, c) => {
 });
 
 export default app;
-
-Bun.serve({
-  port: env.PORT,
-  fetch: app.fetch,
-});
-
-console.info(`Quran API listening on http://localhost:${env.PORT}`);

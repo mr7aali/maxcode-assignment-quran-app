@@ -4,8 +4,9 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "bun --watch src/index.ts",
-    "start": "bun src/index.ts",
+    "build": "bun build src/index.ts src/local.ts --target=node --outdir=dist --external=hono",
+    "dev": "bun --watch src/local.ts",
+    "start": "bun dist/local.js",
     "lint": "tsc --noEmit"
   },
   "dependencies": {
