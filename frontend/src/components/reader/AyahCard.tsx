@@ -6,12 +6,15 @@ import { AudioPlayer } from '@/components/audio/AudioPlayer';
 import { AudioProgress } from '@/components/audio/AudioProgress';
 import { Button } from '@/components/ui/Button';
 import { useAudioPlayer } from '@/hooks/useAudioPlayer';
+import { formatAudioTime } from '@/lib/audio';
 import { arabicFontClass, cn } from '@/lib/utils';
 import { useAppStore } from '@/store/useAppStore';
 import type { Ayah } from '@/types/quran.types';
 
 interface AyahCardProps {
   surahNumber: number;
+  surahName: string;
+  lastAyahNumber: number;
   arabicAyah: Ayah;
   englishTranslation?: string;
   banglaTranslation?: string;
@@ -19,13 +22,20 @@ interface AyahCardProps {
 
 export function AyahCard({
   surahNumber,
+  surahName,
+  lastAyahNumber,
   arabicAyah,
   englishTranslation = '',
   banglaTranslation = '',
 }: AyahCardProps) {
   const [copied, setCopied] = useState(false);
   const settings = useAppStore((state) => state.settings);
-  const player = useAudioPlayer(surahNumber, arabicAyah.numberInSurah);
+  const bookmarkId = `${surahNumber}:${arabicAyah.numberInSurah}`;
+  const isBookmarked = useAppStore((state) =>
+    state.bookmarks.some((bookmark) => bookmark.id === bookmarkId),
+  );
+  const toggleBookmark = useAppStore((state) => state.toggleBookmark);
+  const player = useAudioPlayer(surahNumber, arabicAyah.numberInSurah, lastAyahNumber);
   const ayahId = `ayah-${arabicAyah.numberInSurah}`;
 
   async function copyAyah(): Promise<void> {
@@ -33,30 +43,57 @@ export function AyahCard({
       arabicAyah.text,
       `${arabicAyah.numberInSurah}. ${englishTranslation}`,
       banglaTranslation,
-    ].filter(Boolean).join('\n\n');
+    ]
+      .filter(Boolean)
+      .join('\n\n');
     await navigator.clipboard.writeText(text.trim());
     setCopied(true);
     window.setTimeout(() => setCopied(false), 1200);
+  }
+
+  function onBookmark(): void {
+    toggleBookmark({
+      id: bookmarkId,
+      surahNumber,
+      surahName: surahName || `Surah ${surahNumber}`,
+      ayahNumber: arabicAyah.numberInSurah,
+      arabicText: arabicAyah.text,
+      englishTranslation,
+      banglaTranslation,
+      createdAt: new Date().toISOString(),
+    });
   }
 
   return (
     <article
       id={ayahId}
       className={cn(
-        'group border-b border-border-default px-6 py-7 transition hover:bg-accent-gold/[0.035]',
-        player.isPlaying && 'bg-accent-gold/[0.07]',
+        'group border-b border-border-light px-6 py-7 transition hover:bg-bg-secondary hover:shadow-[var(--shadow-sm)]',
+        player.isPlaying && 'bg-accent-gold-bg shadow-[var(--shadow-sm)]',
       )}
     >
       <div className="mb-6 flex items-center justify-between gap-4">
-        <span className={cn('ayah-badge', player.isPlaying && 'shadow-[0_0_24px_rgba(201,168,76,0.35)]')}>
+        <span
+          className={cn(
+            'ayah-badge',
+            player.isPlaying && 'shadow-[0_0_24px_rgba(201,168,76,0.35)]',
+          )}
+        >
           {arabicAyah.numberInSurah}
         </span>
         <div className="flex items-center gap-1 opacity-100 md:opacity-0 md:transition md:group-hover:opacity-100">
           <Button aria-label="Copy ayah" size="icon" variant="ghost" onClick={copyAyah}>
             {copied ? <Check className="h-4 w-4 text-accent-teal" /> : <Copy className="h-4 w-4" />}
           </Button>
-          <Button aria-label="Bookmark ayah" disabled size="icon" variant="ghost">
-            <Bookmark className="h-4 w-4" />
+          <Button
+            aria-label={isBookmarked ? 'Remove bookmark' : 'Bookmark ayah'}
+            aria-pressed={isBookmarked}
+            className={cn(isBookmarked && 'text-accent-gold hover:text-accent-gold')}
+            size="icon"
+            variant="ghost"
+            onClick={onBookmark}
+          >
+            <Bookmark className={cn('h-4 w-4', isBookmarked && 'fill-current')} />
           </Button>
           <AudioPlayer
             ayahNumber={arabicAyah.numberInSurah}
@@ -68,7 +105,7 @@ export function AyahCard({
       </div>
 
       <p
-        className={cn('text-right text-text-primary', arabicFontClass(settings.arabicFont))}
+        className={cn('text-right text-text-arabic', arabicFontClass(settings.arabicFont))}
         dir="rtl"
         style={{ fontSize: settings.arabicFontSize, lineHeight: 2.2 }}
       >
@@ -76,7 +113,17 @@ export function AyahCard({
       </p>
 
       {player.isPlaying && (
-        <AudioProgress className="mt-6" progress={player.progress} onSeek={player.seek} />
+        <div className="mt-6 space-y-2">
+          <AudioProgress
+            disabled={player.duration <= 0}
+            progress={player.progress}
+            onSeek={player.seek}
+          />
+          <div className="flex items-center justify-between text-xs tabular-nums text-text-secondary">
+            <span>{formatAudioTime(player.currentTime)}</span>
+            <span>{formatAudioTime(player.duration)}</span>
+          </div>
+        </div>
       )}
 
       {settings.showTranslation && (

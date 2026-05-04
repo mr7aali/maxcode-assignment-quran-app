@@ -2,11 +2,11 @@
 
 import { useEffect, useRef } from 'react';
 import { Check, Type } from 'lucide-react';
+import { Toggle } from '@/components/ui/Toggle';
 import { arabicFontClass, cn } from '@/lib/utils';
 import { useAppStore } from '@/store/useAppStore';
 import type { ReciterKey } from '@/types/audio.types';
 import type { ArabicFont } from '@/types/settings.types';
-import { Toggle } from '@/components/ui/Toggle';
 
 const fontOptions: Array<{ value: ArabicFont; label: string }> = [
   { value: 'KFGQPC', label: 'KFGQPC' },
@@ -53,7 +53,7 @@ export function FontPanel() {
   return (
     <div
       ref={panelRef}
-      className="fixed right-4 top-16 z-50 w-80 origin-top-right animate-fade-scale rounded-xl border border-border-default bg-bg-secondary p-4 shadow-2xl"
+      className="fixed right-4 top-16 z-50 w-80 origin-top-right animate-fade-scale rounded-xl border border-border-default bg-bg-surah-list p-4 shadow-[var(--shadow-lg)]"
     >
       <div className="mb-4 flex items-center gap-2 text-sm font-semibold text-text-primary">
         <Type className="h-4 w-4 text-accent-gold" />
@@ -73,8 +73,8 @@ export function FontPanel() {
                 className={cn(
                   'flex h-9 items-center justify-center rounded-lg border text-xs transition',
                   settings.arabicFont === option.value
-                    ? 'border-accent-gold bg-accent-gold/15 text-accent-gold-light'
-                    : 'border-border-default text-text-secondary hover:bg-bg-tertiary',
+                    ? 'border-accent-gold bg-accent-gold-bg text-accent-gold'
+                    : 'border-border-default text-text-secondary hover:bg-bg-secondary',
                 )}
                 onClick={() => setArabicFont(option.value)}
               >
@@ -86,7 +86,10 @@ export function FontPanel() {
         </section>
 
         <div
-          className={cn('rounded-lg border border-border-default bg-bg-primary p-4 text-center', arabicFontClass(settings.arabicFont))}
+          className={cn(
+            'rounded-lg border border-border-default bg-bg-secondary p-4 text-center shadow-[var(--shadow-sm)]',
+            arabicFontClass(settings.arabicFont),
+          )}
           dir="rtl"
           style={{ fontSize: settings.arabicFontSize }}
         >
@@ -94,7 +97,7 @@ export function FontPanel() {
         </div>
 
         <label className="block text-sm text-text-secondary">
-          Arabic size: <span className="text-accent-gold-light">{settings.arabicFontSize}px</span>
+          Arabic size: <span className="text-accent-gold">{settings.arabicFontSize}px</span>
           <input
             className="mt-2 w-full accent-accent-gold"
             max={48}
@@ -107,7 +110,7 @@ export function FontPanel() {
 
         <label className="block text-sm text-text-secondary">
           Translation size:{' '}
-          <span className="text-accent-gold-light">{settings.translationFontSize}px</span>
+          <span className="text-accent-gold">{settings.translationFontSize}px</span>
           <input
             className="mt-2 w-full accent-accent-gold"
             max={24}
@@ -126,7 +129,7 @@ export function FontPanel() {
         <label className="block text-sm text-text-secondary">
           Reciter
           <select
-            className="mt-2 h-10 w-full rounded-lg border border-border-default bg-bg-primary px-3 text-sm text-text-primary outline-none focus:border-accent-gold"
+            className="mt-2 h-10 w-full rounded-lg border border-border-default bg-bg-secondary px-3 text-sm text-text-primary shadow-[var(--shadow-sm)] outline-none focus:border-accent-gold"
             value={settings.reciter}
             onChange={(event) => setReciter(event.currentTarget.value as ReciterKey)}
           >

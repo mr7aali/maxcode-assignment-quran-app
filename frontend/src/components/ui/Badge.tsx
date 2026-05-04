@@ -7,8 +7,8 @@ interface BadgeProps extends HTMLAttributes<HTMLSpanElement> {
 }
 
 const toneClass = {
-  gold: 'border-accent-gold/40 bg-accent-gold/15 text-accent-gold-light',
-  teal: 'border-accent-teal/40 bg-accent-teal/15 text-accent-teal',
+  gold: 'border-[var(--accent-gold)] bg-accent-gold-bg text-accent-gold',
+  teal: 'border-accent-teal bg-accent-teal-bg text-accent-teal',
   muted: 'border-border-default bg-bg-tertiary text-text-secondary',
 } as const;
 

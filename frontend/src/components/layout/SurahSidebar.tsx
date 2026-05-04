@@ -16,13 +16,20 @@ interface SurahSidebarProps {
 }
 
 function searchable(value: string): string {
-  return value.toLowerCase().replace(/[^a-z0-9\u0600-\u06ff]/g, '').replace(/aa/g, 'a');
+  return value
+    .toLowerCase()
+    .replace(/[^a-z0-9\u0600-\u06ff]/g, '')
+    .replace(/aa/g, 'a');
 }
 
 export function SurahSidebar({ surahs, activeNumber, loading }: SurahSidebarProps) {
   const [filter, setFilter] = useState('');
   const isOpen = useAppStore((state) => state.isSurahSidebarOpen);
   const setSurahSidebarOpen = useAppStore((state) => state.setSurahSidebarOpen);
+
+  function closeSidebar(): void {
+    setSurahSidebarOpen(false);
+  }
 
   const filteredSurahs = useMemo(() => {
     const query = searchable(filter);
@@ -43,17 +50,19 @@ export function SurahSidebar({ surahs, activeNumber, loading }: SurahSidebarProp
       {isOpen && (
         <button
           aria-label="Close surah drawer"
-          className="fixed inset-0 z-30 bg-bg-primary/70 backdrop-blur-sm md:hidden"
+          className="fixed inset-0 z-30 bg-[rgba(26,18,9,0.55)] backdrop-blur-sm md:hidden dark:bg-[color:color-mix(in_srgb,var(--bg-primary)_70%,transparent)]"
           type="button"
-          onClick={() => setSurahSidebarOpen(false)}
+          onClick={closeSidebar}
         />
       )}
 
       <aside
         className={cn(
-          'fixed z-40 border-border-default bg-bg-sidebar transition-transform duration-300',
+          'fixed z-40 border-border-default bg-bg-surah-list shadow-[var(--shadow-lg)] transition-transform duration-300',
           'bottom-0 left-0 h-[82vh] w-full rounded-t-xl border-t md:left-14 md:top-0 md:h-screen md:w-72 md:rounded-none md:border-r md:border-t-0',
-          isOpen ? 'translate-y-0 md:translate-x-0' : 'translate-y-full md:-translate-x-full md:translate-y-0',
+          isOpen
+            ? 'translate-y-0 md:translate-x-0'
+            : 'translate-y-full md:translate-x-[calc(-100%_-_3.5rem)] md:translate-y-0',
         )}
       >
         <div className="flex h-full flex-col">
@@ -67,7 +76,7 @@ export function SurahSidebar({ surahs, activeNumber, loading }: SurahSidebarProp
               className="md:hidden"
               size="icon"
               variant="ghost"
-              onClick={() => setSurahSidebarOpen(false)}
+              onClick={closeSidebar}
             >
               <X className="h-4 w-4" />
             </Button>
@@ -78,7 +87,7 @@ export function SurahSidebar({ surahs, activeNumber, loading }: SurahSidebarProp
               <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-text-muted" />
               <input
                 aria-label="Filter surahs"
-                className="h-10 w-full rounded-lg border border-border-default bg-bg-primary pl-9 pr-3 text-sm text-text-primary outline-none transition placeholder:text-text-muted focus:border-accent-gold"
+                className="h-10 w-full rounded-lg border border-border-default bg-bg-secondary pl-9 pr-3 text-sm text-text-primary shadow-[var(--shadow-sm)] outline-none transition placeholder:text-text-muted focus:border-accent-gold"
                 placeholder="Name, number, Arabic"
                 value={filter}
                 onChange={(event) => setFilter(event.currentTarget.value)}
@@ -102,20 +111,16 @@ export function SurahSidebar({ surahs, activeNumber, loading }: SurahSidebarProp
                   <Link
                     key={surah.number}
                     className={cn(
-                      'contain-content grid min-h-[68px] grid-cols-[40px_1fr_auto] items-center gap-3 border-l-2 border-transparent px-3 py-2 transition hover:bg-bg-tertiary/70',
+                      'contain-content grid min-h-[68px] grid-cols-[40px_1fr_auto] items-center gap-3 border-l-2 border-transparent px-3 py-2 transition hover:bg-bg-secondary',
                       active && 'surah-active',
                     )}
                     href={`/surah/${surah.number}`}
-                    onClick={() => {
-                      if (window.innerWidth < 768) {
-                        setSurahSidebarOpen(false);
-                      }
-                    }}
+                    onClick={closeSidebar}
                   >
                     <span
                       className={cn(
                         'flex h-9 w-9 items-center justify-center rounded-lg border border-border-default text-sm font-semibold text-text-secondary',
-                        active && 'border-accent-gold bg-accent-gold text-bg-primary',
+                        active && 'border-accent-gold bg-accent-gold text-white dark:text-bg-primary',
                       )}
                     >
                       {surah.number}
@@ -128,7 +133,10 @@ export function SurahSidebar({ surahs, activeNumber, loading }: SurahSidebarProp
                         {surah.englishNameTranslation} · {surah.numberOfAyahs}
                       </span>
                     </span>
-                    <span className="arabic-text max-w-[70px] truncate text-right text-lg text-text-secondary" dir="rtl">
+                    <span
+                      className="arabic-text max-w-[70px] truncate text-right text-lg text-text-secondary"
+                      dir="rtl"
+                    >
                       {surah.name}
                     </span>
                   </Link>

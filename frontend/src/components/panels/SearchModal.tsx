@@ -32,7 +32,7 @@ function HighlightedText({ text, query }: { text: string; query: string }) {
       {parts.map((part, index) => (
         <span
           key={`${part.text}-${index}`}
-          className={part.match ? 'rounded bg-accent-gold/20 text-accent-gold-light' : undefined}
+          className={part.match ? 'rounded bg-accent-gold-bg text-accent-gold' : undefined}
         >
           {part.text}
         </span>
@@ -53,7 +53,7 @@ export function SearchModal() {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-start justify-center bg-bg-primary/80 px-4 py-16 backdrop-blur"
+      className="fixed inset-0 z-50 flex items-start justify-center bg-[rgba(26,18,9,0.6)] px-4 py-16 backdrop-blur dark:bg-[color:color-mix(in_srgb,var(--bg-primary)_80%,transparent)]"
       role="dialog"
       aria-modal="true"
       onMouseDown={(event) => {
@@ -62,12 +62,12 @@ export function SearchModal() {
         }
       }}
     >
-      <div className="w-full max-w-2xl animate-fade-scale rounded-xl border border-border-default bg-bg-secondary shadow-2xl">
+      <div className="w-full max-w-2xl animate-fade-scale rounded-xl border border-border-default bg-bg-surah-list shadow-[var(--shadow-lg)]">
         <div className="flex h-14 items-center gap-3 border-b border-border-default px-4">
           <Search className="h-5 w-5 text-accent-gold" />
           <input
             autoFocus
-            className="h-full flex-1 bg-transparent text-base text-text-primary outline-none placeholder:text-text-muted"
+            className="h-10 flex-1 rounded-lg bg-bg-secondary px-3 text-base text-text-primary outline-none placeholder:text-text-muted"
             placeholder="Search the translation"
             value={query}
             onChange={(event) => setQuery(event.currentTarget.value)}
@@ -106,7 +106,7 @@ export function SearchModal() {
                 key={`${result.surahNumber}:${result.ayahNumber}:${result.text}`}
                 type="button"
                 className={cn(
-                  'w-full rounded-lg px-4 py-3 text-left transition hover:bg-bg-tertiary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-gold',
+                  'w-full rounded-lg px-4 py-3 text-left transition hover:bg-bg-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-gold',
                 )}
                 onClick={() => {
                   setSearchOpen(false);
@@ -114,7 +114,7 @@ export function SearchModal() {
                 }}
               >
                 <div className="mb-1 flex items-center gap-2 text-xs text-text-muted">
-                  <span className="rounded-full border border-accent-gold/40 bg-accent-gold/10 px-2 py-0.5 text-accent-gold-light">
+                  <span className="rounded-full border border-[var(--accent-gold-border)] bg-accent-gold-bg px-2 py-0.5 text-accent-gold">
                     {result.surahNumber}:{result.ayahNumber}
                   </span>
                   <span>{result.surahEnglishName}</span>

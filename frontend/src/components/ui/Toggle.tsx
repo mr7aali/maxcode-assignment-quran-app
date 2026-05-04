@@ -18,13 +18,13 @@ export function Toggle({ checked, onChange, label }: ToggleProps) {
       onClick={() => onChange(!checked)}
       className={cn(
         'relative h-7 w-12 rounded-full border transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-gold',
-        checked ? 'border-accent-gold bg-accent-gold/30' : 'border-border-default bg-bg-tertiary',
+        checked ? 'border-accent-gold bg-accent-gold-bg' : 'border-border-default bg-bg-tertiary',
       )}
     >
       <span
         className={cn(
-          'absolute top-1 h-5 w-5 rounded-full bg-text-primary transition',
-          checked ? 'left-6 bg-accent-gold-light' : 'left-1',
+          'absolute top-1 h-5 w-5 rounded-full bg-bg-elevated shadow-[var(--shadow-sm)] transition',
+          checked ? 'left-6 bg-accent-gold' : 'left-1',
         )}
       />
     </button>

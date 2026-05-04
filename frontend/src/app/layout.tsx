@@ -32,11 +32,33 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+  const themeScript = `
+    (function() {
+      try {
+        var directTheme = localStorage.getItem('quran-theme');
+        var stored = localStorage.getItem('quran-app-settings');
+        var parsed = stored ? JSON.parse(stored) : null;
+        var theme = directTheme || (parsed && parsed.state && parsed.state.theme ? parsed.state.theme : 'dark');
+        if (theme === 'dark') {
+          document.documentElement.classList.add('dark');
+        } else {
+          document.documentElement.classList.remove('dark');
+        }
+      } catch(e) {
+        document.documentElement.classList.add('dark');
+      }
+    })();
+  `;
+
   return (
     <html
       className={`${inter.variable} ${notoNaskh.variable} ${amiri.variable} ${scheherazade.variable}`}
       lang="en"
+      suppressHydrationWarning
     >
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
       <body className="font-sans antialiased">{children}</body>
     </html>
   );

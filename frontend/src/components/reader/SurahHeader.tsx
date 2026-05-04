@@ -14,7 +14,7 @@ export function SurahHeader({ surah }: SurahHeaderProps) {
       <div className="ornament ornament-left" />
       <div className="ornament ornament-right" />
       <div className="relative z-10 mx-auto max-w-3xl animate-fade-up">
-        <div className="mx-auto mb-5 flex h-12 w-12 items-center justify-center rounded-xl border border-accent-gold/50 bg-accent-gold/15 font-semibold text-accent-gold-light">
+        <div className="mx-auto mb-5 flex h-12 w-12 items-center justify-center rounded-xl border border-[var(--accent-gold-border)] bg-accent-gold-bg font-semibold text-accent-gold shadow-[var(--shadow-sm)]">
           {surah.number}
         </div>
         <h1 className="arabic-text text-[38px] text-text-primary" dir="rtl">
