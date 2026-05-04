@@ -84,7 +84,13 @@ export function TopBar({ surah }: TopBarProps) {
             ⌘K
           </span>
         </Button>
-        <Button aria-label="Open search" className="md:hidden" size="icon" variant="ghost" onClick={() => setSearchOpen(true)}>
+        <Button
+          aria-label="Open search"
+          className="md:hidden"
+          size="icon"
+          variant="ghost"
+          onClick={() => setSearchOpen(true)}
+        >
           <Search className="h-5 w-5" />
         </Button>
         <ThemeToggle className="hidden md:block" />
